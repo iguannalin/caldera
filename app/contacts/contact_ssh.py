@@ -30,12 +30,6 @@ class Contact(BaseWorld):
     def server_factory(self):
         return SSHServerContact(self.services, self._user_name, self._user_password)
 
-    @staticmethod
-    def handle_client(process):
-        process.stdout.write('Welcome to my SSH server, %s!\n' %
-                             process.get_extra_info('username'))
-        process.exit(0)
-
 
 class SSHServerContact(asyncssh.SSHServer):
     def __init__(self, services, user_name, user_password):
