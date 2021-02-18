@@ -41,6 +41,7 @@ class AgentFieldsSchema(ma.Schema):
     deadman_enabled = ma.fields.Boolean()
     available_contacts = ma.fields.List(ma.fields.String())
     created = ma.fields.DateTime(format='%Y-%m-%d %H:%M:%S')
+    tunneled_server = ma.fields.String()
 
     @ma.pre_load
     def remove_nulls(self, in_data, **_):
@@ -138,7 +139,8 @@ class Agent(FirstClassObjectInterface, BaseObject):
             self.last_trusted_seen = now
         self.update('pid', kwargs.get('pid'))
         self.update('ppid', kwargs.get('ppid'))
-        self.update('server', kwargs.get('server'))
+        tunneled_server = kwargs.get('tunneled_server')
+        self.update('server', tunneled_server if tunneled_server else kwargs.get('server'))
         self.update('exe_name', kwargs.get('exe_name'))
         self.update('location', kwargs.get('location'))
         self.update('privilege', kwargs.get('privilege'))
