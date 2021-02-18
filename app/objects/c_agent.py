@@ -74,7 +74,7 @@ class Agent(FirstClassObjectInterface, BaseObject):
                  username='unknown', architecture='unknown', group='red', location='unknown', pid=0, ppid=0,
                  trusted=True, executors=(), privilege='User', exe_name='unknown', contact='unknown', paw=None,
                  proxy_receivers=None, proxy_chain=None, origin_link_id=0, deadman_enabled=False,
-                 available_contacts=None):
+                 available_contacts=None, tunneled_server=''):
         super().__init__()
         self.paw = paw if paw else self.generate_name(size=6)
         self.host = host
@@ -82,7 +82,7 @@ class Agent(FirstClassObjectInterface, BaseObject):
         self.group = group
         self.architecture = architecture
         self.platform = platform.lower()
-        url = urlparse(server)
+        url = urlparse(tunneled_server if tunneled_server else server)
         self.server = '%s://%s:%s' % (url.scheme, url.hostname, url.port)
         self.location = location
         self.pid = pid
