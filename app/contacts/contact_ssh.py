@@ -24,8 +24,7 @@ class Contact(BaseWorld):
         self._user_name = self.get_config('app.contact.ssh.user_name')
         self._user_password = self.get_config('app.contact.ssh.user_password')
         await asyncssh.create_server(self.server_factory, addr, int(port),
-                                     server_host_keys=[host_key],
-                                     process_factory=self.handle_client)
+                                     server_host_keys=[host_key])
 
     def server_factory(self):
         return SSHServerContact(self.services, self._user_name, self._user_password)
