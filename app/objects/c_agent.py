@@ -41,7 +41,6 @@ class AgentFieldsSchema(ma.Schema):
     deadman_enabled = ma.fields.Boolean()
     available_contacts = ma.fields.List(ma.fields.String())
     created = ma.fields.DateTime(format='%Y-%m-%d %H:%M:%S')
-    tunneled_server = ma.fields.String()
 
     @ma.pre_load
     def remove_nulls(self, in_data, **_):
@@ -75,7 +74,7 @@ class Agent(FirstClassObjectInterface, BaseObject):
                  username='unknown', architecture='unknown', group='red', location='unknown', pid=0, ppid=0,
                  trusted=True, executors=(), privilege='User', exe_name='unknown', contact='unknown', paw=None,
                  proxy_receivers=None, proxy_chain=None, origin_link_id=0, deadman_enabled=False,
-                 available_contacts=None, tunneled_server=''):
+                 available_contacts=None):
         super().__init__()
         self.paw = paw if paw else self.generate_name(size=6)
         self.host = host
@@ -83,7 +82,7 @@ class Agent(FirstClassObjectInterface, BaseObject):
         self.group = group
         self.architecture = architecture
         self.platform = platform.lower()
-        url = urlparse(tunneled_server if tunneled_server else server)
+        url = urlparse(server)
         self.server = '%s://%s:%s' % (url.scheme, url.hostname, url.port)
         self.location = location
         self.pid = pid
@@ -139,8 +138,7 @@ class Agent(FirstClassObjectInterface, BaseObject):
             self.last_trusted_seen = now
         self.update('pid', kwargs.get('pid'))
         self.update('ppid', kwargs.get('ppid'))
-        tunneled_server = kwargs.get('tunneled_server')
-        self.update('server', tunneled_server if tunneled_server else kwargs.get('server'))
+        self.update('server', kwargs.get('server'))
         self.update('exe_name', kwargs.get('exe_name'))
         self.update('location', kwargs.get('location'))
         self.update('privilege', kwargs.get('privilege'))
