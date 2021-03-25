@@ -98,7 +98,7 @@ class BasePlanningService(BaseService):
         :return: updated list of links
         """
         links[:] = [l for l in links if
-                    not re.findall(r'#{(.*?)}', b64decode(l.command).decode('utf-8'), flags=re.DOTALL)]
+                    not re.findall(r'(#{[a-zA-Z1-9]+?\..+?})', b64decode(l.command).decode('utf-8'), flags=re.DOTALL)]
         return links
 
     async def remove_links_missing_requirements(self, links, operation):
@@ -199,14 +199,14 @@ class BasePlanningService(BaseService):
         limited_facts = []
         for limit in re.findall(self.re_limited, decoded_test):
             limited = copy.deepcopy(facts)
-            trait = re.search(self.re_trait, limit).group(0)
+            trait = re.search(self.re_trait, limit).group(0).split('#{')[-1]
 
             limit_definitions = re.search(self.re_index, limit).group(0)
             if limit_definitions:
                 for limiter in limit_definitions.split(','):
                     limited = self._apply_limiter(trait=trait, limiter=limiter.split('='), facts=limited)
             if limited:
-                limited_facts.append(limited[0])
+                limited_facts.extend(limited)
         if limited_facts:
             return limited_facts
         return facts

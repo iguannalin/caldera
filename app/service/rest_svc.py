@@ -130,8 +130,16 @@ class RestService(RestServiceInterface, BaseService):
     async def display_operation_report(self, data):
         op_id = data.pop('op_id')
         op = (await self.get_service('data_svc').locate('operations', match=dict(id=int(op_id))))[0]
-        return await op.report(file_svc=self.get_service('file_svc'), data_svc=self.get_service('data_svc'),
-                               output=data.get('agent_output'))
+        report_format = data.pop('format', 'full-report')
+        if report_format == 'full-report':
+            generator_func = op.report
+        elif report_format == 'event-logs':
+            generator_func = op.event_logs
+        else:
+            self.log.error('Unsupported operation report format requested: %s' % report_format)
+            return ''
+        return await generator_func(file_svc=self.get_service('file_svc'), data_svc=self.get_service('data_svc'),
+                                    output=data.get('agent_output'))
 
     async def download_contact_report(self, contact):
         return dict(contacts=self.get_service('contact_svc').report.get(contact.get('contact'), dict()))
@@ -268,7 +276,7 @@ class RestService(RestServiceInterface, BaseService):
             new_plugin = data.get('value')
             if new_plugin not in enabled_plugins:
                 enabled_plugins.append(new_plugin)
-        else:
+        elif data.get('prop') != 'requirements':  # Prevent users from editing requirements via API.
             self.set_config('main', data.get('prop'), data.get('value'))
         return self.get_config()
 
@@ -310,6 +318,15 @@ class RestService(RestServiceInterface, BaseService):
         app_config.update({'agents.%s' % k: v for k, v in self.get_config(name='agents').items()})
 
         return dict(abilities=raw_abilities, app_config=app_config)
+
+    async def list_exfil_files(self, data):
+        files = self.get_service('file_svc').list_exfilled_files()
+        if data.get('operation_id'):
+            folders = await self._get_operation_exfil_folders(data['operation_id'])
+            for key in list(files.keys()):
+                if key not in folders:
+                    files.pop(key, None)
+        return files
 
     """ PRIVATE """
 
@@ -663,3 +680,7 @@ class RestService(RestServiceInterface, BaseService):
         for ab in abilities:
             ab.timeout = exec_timeouts[ab.platform][ab.executor]
             await self.get_service('data_svc').store(ab)
+
+    async def _get_operation_exfil_folders(self, operation_id):
+        op = (await self.get_service('data_svc').locate('operations', match=dict(id=int(operation_id))))[0]
+        return ['%s-%s' % (a.host, a.paw) for a in op.agents]
