@@ -1,0 +1,39 @@
+
+#vueapp-section .row {
+    height: auto;
+    min-height: 350px;
+    background-color: black;
+    background-image: url('/vueapp/img/background.jpg');
+    background-position: bottom right;
+    background-repeat: no-repeat;
+}
+
+#vueapp-sidebar-wrapper {
+    flex: 15%;
+    padding: 0 1em 1em;
+    text-align: left;
+}
+
+#vueapp-sidebar-wrapper > h1 {
+    font-size: 3em;
+    margin: 0;
+}
+
+#vueapp-sidebar-wrapper > p {
+    font-size: 1em;
+}
+
+#vueapp-sidebar button {
+    width: 100%;
+}
+
+#vueapp-content {
+    flex: 85%;
+}
+
+#vueapp-data {
+    width: 100%;
+    margin: 2em 0;
+    opacity: .5;
+    background-color: black;
+}

@@ -1,0 +1,24 @@
+
+<link rel="stylesheet" href="/vueapp/css/vueapp.css">
+<script src="/vueapp/js/vueapp.js"></script>
+
+<div id="vueapp-section" class="section-profile">
+    <div class="row">
+        <div class="topleft duk-icon"><img onclick="removeSection('vueapp-section')" src="/gui/img/x.png"></div>
+
+        <!-- sidebar -->
+        <div id="vueapp-sidebar-wrapper" class="column section-profile">
+            <h1>{{name}}</h1>
+            <p>{{description}}</p>
+            <div id="vueapp-sidebar">
+                <button type="button" class="button-success atomic-button" onclick="vueappFunction()">Click me!</button>
+            </div>
+        </div>
+
+        <!-- main content -->
+        <div id="vueapp-content" class="column">
+            <label for="vueapp-data">Output</label>
+            <textarea id="vueapp-data" class="column log-box" rows="10"></textarea>
+        </div>
+    </div>
+</div>

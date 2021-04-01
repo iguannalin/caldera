@@ -100,10 +100,12 @@ class AppService(AppServiceInterface, BaseService):
             plugin = Plugin(name=p)
             if plugin.load_plugin():
                 await self.get_service('data_svc').store(plugin)
+                print('**loading plugin', plugin.name)
                 self._loaded_plugins.append(plugin)
 
             if plugin.name in self.get_config('plugins'):
                 await plugin.enable(self.get_services())
+                print('**enabling plugin', plugin.name)
                 self.log.info('Enabled plugin: %s' % plugin.name)
 
         for plug in filter(trim, plugins):
