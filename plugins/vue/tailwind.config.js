@@ -11,6 +11,9 @@ module.exports = {
                     red: '#750b20'
                 }
             },
+            fontFamily: {
+
+            }
         },
     },
     variants: {
