@@ -8,7 +8,9 @@ module.exports = {
         extend: {
             colors: {
                 caldera: {
-                    red: '#750b20'
+                    // red: '#C31135'
+                    red: '#750b20',
+                    reddish: '#AA324A'
                 }
             },
             fontFamily: {

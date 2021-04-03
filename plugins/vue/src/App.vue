@@ -1,33 +1,57 @@
 <template>
-  <div class="flex border-caldera-red border-2 rounded-3xl m-5 p-6 text-colors-white font-sans bg-colors-black">
+  <div
+      class="flex border-caldera-red border-2 rounded-3xl m-5 p-6 text-colors-white font-sans bg-colors-white bg-opacity-5">
     <div v-if="!selectedCert" class="flex justify-center flex-col w-full">
       <div class="flex justify-center flex-col items-center">
-        <h2 class="text-colors-white text-2xl">Choose a certificate:</h2>
+        <h2 class="text-colors-white text-caldera-reddish text-2xl">Choose a certificate:</h2>
         <div class="flex justify-center items-center mt-2">
-          <div class="flex flex-col justify-center items-center p-2" v-for="(cert, index) in certificateTypes" :key="index">
-            <button v-bind:value="selectedCert" v-on:click="selectedCert = cert">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+          <div class="flex flex-col justify-center items-center p-2" v-for="(cert, index) in certificateTypes"
+               :key="index">
+            <button class="w-24 hover:bg-caldera-red rounded" v-bind:value="selectedCert"
+                    v-on:click="selectedCert = cert">
+              <!--              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">-->
+              <!--                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>-->
+              <!--              </svg>-->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <span class="text-sm">{{ cert }}</span>
             </button>
-
-
-            <!--            <label v-bind:for="cert" class="text-color-black text-base pl-1 pr-1">-->
-            <!--              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">-->
-            <!--                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>-->
-            <!--              </svg>-->
-            <!--              <span>{{ cert }}</span>-->
-            <!--            </label>-->
-            <!--            <input class="hid" v-bind:id="cert" type="radio" v-model="selectedCert" v-bind:value="cert"/>-->
           </div>
         </div>
       </div>
     </div>
     <div v-else class="flex justify-center flex-col w-full">
       <div class="flex justify-center">
-        <h2 class="text-colors-white text-2xl">Training: {{ selectedCert }}</h2>
-        <input type="radio" v-bind:value="''" v-model="selectedCert"/><label>Choose different user</label>
+        <div class="flex justify-center items-center mt-2 flex-col">
+          <h2 class="text-colors-white text-2xl">Training: {{ selectedCert }}</h2>
+          <div>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
+              </svg>
+            </span>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-center items-center p-2">
+            <button class="flex flex-row w-24 items-center hover:bg-caldera-red" v-bind:value="selectedCert"
+                    v-on:click="selectedCert = ''">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span class="text-xs">Choose different user</span>
+            </button>
+          </div>
+        </div>
       </div>
       <div class="flex justify-center items-center flex-wrap">
         <h3 class="text-lg">Badges: </h3>
@@ -38,8 +62,7 @@
         </div>
       </div>
       <div class="mt-2" v-for="(flag, index) in flagList" :key="index">
-        <Flag v-bind:msg="flag.name"></Flag>
-        <div>{{ flag.challenge }}</div>
+        <Flag :flag="flag"></Flag>
       </div>
     </div>
   </div>
@@ -56,7 +79,7 @@ export default {
   },
   data: function () {
     return {
-      selectedCert: "",
+      selectedCert: '',
       badgeList: [],
       flagList: [],
       certificateTypes: ["User Certificate", "Blue Certificate"]
@@ -97,7 +120,7 @@ export default {
         this.badgeList.push(badge);
         for (const flagIndex in badge.flags) {
           const flag = badge.flags[flagIndex]
-          this.flagList.push(flag);
+          this.flagList.push({...flag, badge_name: badge.name, certName: this.selectedCert});
         }
       }
     }
