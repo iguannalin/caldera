@@ -10,7 +10,9 @@ module.exports = {
                 caldera: {
                     // red: '#C31135'
                     red: '#750b20',
-                    reddish: '#AA324A'
+                    reddish: '#AA324A',
+                    brown: '#755F63',
+                    grayish: '#151515'
                 }
             },
             fontFamily: {
