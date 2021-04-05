@@ -61,17 +61,17 @@
           </div>
         </div>
       </div>
-      <div class="flex justify-center items-center flex-wrap text-caldera-brown">
+      <div class="flex justify-center items-center flex-wrap text-caldera-brown mt-2 mb-2">
         <h3 class="text-lg text-caldera-brown">Badges: </h3>
         <div class="flex justify-center flex-col text-caldera-brown" v-for="(badge, index) in badgeList" :key="index">
           <!--TODO get badge icon-->
           <!--<div><img v-bind:src="badge.icon"</div>-->
-          <button class="text-base text-caldera-brown pl-1 pr-1 hover:underline" v-bind:class="{'underline font-bold': selectedBadge === badge}" v-bind:value="selectedBadge"
+          <button class="text-base text-caldera-brown pl-1 pr-1 hover:underline" v-bind:class="{'font-bold': selectedBadge === badge}" v-bind:value="selectedBadge"
                   v-on:click="(selectedBadge === badge) ? selectedBadge = '' : selectedBadge = badge">{{ badge.name }}
           </button>
         </div>
       </div>
-      <div class="flex mt-1 justify-between flex-row flex-wrap">
+      <div class="flex mt-1 flex-row flex-wrap justify-start">
         <div class="lg:w-3/12 md:w-4/12 sm:w-full p-2 box-border" v-for="(flag, index) in visibleFlagList" :key="index">
           <Flag :flag="flag"></Flag>
         </div>

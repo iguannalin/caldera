@@ -4,6 +4,17 @@
             "name": "agents",
             "flags": [
                 {
+                    "answer": "foo",
+                    "number": 0,
+                    "name": "Written text test",
+                    "challenge": "Example text entry flag",
+                    "completed": false,
+                    "extra_info": "Extra flag details",
+                    "code": "text-entry",
+                    "completed_timestamp": "2021-04-01 11:09:41",
+                    "resettable": "False"
+                },
+                {
                     "number": 1,
                     "name": "Local agent",
                     "challenge": "Demonstrate your ability to deploy an agent on local host. The agent should successfully beacon back to this server instance.",
