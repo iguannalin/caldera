@@ -25,7 +25,7 @@ plugins:
 - sandcat
 - stockpile
 - training
-- vue
+- training-vue
 port: 8888
 reports_dir: /tmp
 requirements:
